@@ -1,7 +1,3 @@
-#
-# $Id: README,v 1.1 2009/05/26 20:11:38 evertonm Exp $
-#
-
 INTRODUCTION
 ============
 
@@ -63,5 +59,7 @@ BASIC USAGE
 
         $ fapip -h
 
-                              -- END --
+
+END
+===
 
