@@ -1,7 +1,7 @@
 INTRODUCTION
 ============
 
-        fapip stands for fasp ping probe, a tool for measuring packet
+        fapip stands for fast ping probe, a tool for measuring packet
         loss against a remote host.
 
 LICENSE
