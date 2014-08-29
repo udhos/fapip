@@ -59,7 +59,8 @@ MA 02110-1301 USA
   FAPIP_UPDATE_MAX(curr,max) \
 }
 
-#define PRINTF_U64 "lu"
+/* #define PRINTF_U64 "lu" */
+#define PRINTF_U64 PRIu64
 
 const char         *fapip_prog_name            = "fapip";
 int                 fapip_send_interval_msec   = 100;
@@ -330,7 +331,7 @@ static void find_rtt(uint16_t recv_seq,
   if (icmpdata_len < sizeof(struct timeval)) {
     fprintf(stdout, "%s: %s: short ICMP data size=%zd < min=%" PRINTF_U64 " from %s\n",
 	    fapip_prog_name, __PRETTY_FUNCTION__,
-	    icmpdata_len, sizeof(struct timeval), inet_ntoa(from_addr));
+	    icmpdata_len, (uint64_t) sizeof(struct timeval), inet_ntoa(from_addr));
     return;
   }
   
@@ -502,8 +503,8 @@ static void icmp_read(int fd, const struct timeval *tv_now,
     memcpy(&tv_sent, ((const char *) icmp_hdr) + sizeof(*icmp_hdr), sizeof(tv_sent));
     timersub(tv_now, &tv_sent, &tv_elap); /* tv_elap = tv_now - tv_sent */
     snprintf(buf_rtt, sizeof(buf_rtt), "%" PRINTF_U64 ".%03" PRINTF_U64,
-	     tv_elap.tv_sec * 1000,
-	     tv_elap.tv_usec / 1000);
+	     (uint64_t) tv_elap.tv_sec * 1000,
+	     (uint64_t)  tv_elap.tv_usec / 1000);
   }
 
   fprintf(stdout, "%s: %s: fd=%d: late packet seq=%u with rtt=%s ms from %s\n",
@@ -915,8 +916,8 @@ int main(int argc, const char *argv[])
       }
       fapip_packet_length = atoi(argv[i]);
       if (fapip_packet_length < FAPIP_MIN_PKT_SIZE) {
-	fprintf(stdout, "%s: packet size=%zd lower than minimum=%lu\n",
-		fapip_prog_name, fapip_packet_length, FAPIP_MIN_PKT_SIZE);
+	fprintf(stdout, "%s: packet size=%zd lower than minimum=%" PRINTF_U64 "\n",
+		fapip_prog_name, fapip_packet_length, (uint64_t) FAPIP_MIN_PKT_SIZE);
 	exit(1);
       }
       continue;
